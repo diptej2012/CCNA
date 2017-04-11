@@ -1,0 +1,233 @@
+--------------------------------------------------------------------------------
+Router Configuration
+--------------------------------------------------------------------------------
+
+[Erase the Start-Up Configuration]
+	R1# erase startup-config
+	R1# reload
+
+[Configure Router]
+	R1# hostname R1
+	R1# no ip domain-lookup
+	R1# security passwords min-length 10
+	
+[Setup EXEC password (Enable)]
+	R1# enable secret cisco
+
+[Setup Console password]
+	R1# line console 0
+	R1# password class
+	R1# login
+	R1# logging synchronous
+
+[Setup VTY password (Telnet/SSH)]
+	R1# line vty 0 15
+	R1# password class
+	R1# login
+	R1# logging synchronous
+
+[Encrypt Clear Text passwords]
+	R1# service password-encryption
+
+[Banner]
+	R1# banner motd # ... #
+
+
+[Set the Clock]
+	R1# clock set 05:00:00 16 Feb 2015
+
+
+[Set the Clock Rate on DCE]
+	R1# clock rate 128000
+
+
+[Show DCE]
+	R1# show controllers serial 0/1/0
+
+
+[Configure Interface]
+	R1# interface gigabitEthernet 0/1
+	R1# description "Connection to PC-A"
+	R1# ip address 192.168.0.1 255.255.255.0
+	R1# no shutdown
+
+[Configure Loop Interface]
+	R1# interface loop 0
+	R1# description "Loopback address"
+	R1# ip address 192.168.0.1 255.255.255.0
+	R1# no shutdown
+
+
+[Configure Recursive Static Route]
+	R1# ip route 192.168.1.0 255.255.255.0 10.1.1.2
+
+
+[Configure a Directly Connected Static Route]
+	R1# ip route 192.168.0.0 255.255.255.0 Serial 0/1/0
+
+
+[Configure a Default Route]
+	R1# ip route 0.0.0.0 0.0.0.0 Serial 0/1/0
+
+
+[Remove a Static Route]
+	R1# no ip route 209.165.200.224 255.255.255.224 {IP,SERIAL}
+
+
+
+[Configure RIP Routing - Advertise all networks directly connected]	
+	R1# router rip
+	R1# version 2
+	R1# network 192.168.10.0
+	R1# network 192.168.20.0
+	R1# network 10.1.1.0
+
+
+[Create a NUMBERED - ACL]
+	R1# access-list 100 remark "Allow R1 LANs Access"
+	R1# access-list 100 permit 192.168.168.10.0 0.0.0.255
+	R1# access-list 100 permit 192.168.168.20.0 0.0.0.255
+	R1# access-list 100 deny any
+
+[Apply ACL to the Interface - in the correct direction]
+	R1# interface gigabitEthernet 0/1
+	R1# ip access-group 100 out
+
+
+[Create a NAMED - ACL]
+	R1# ip access-list standard "BRANCH-OFFICE-POLICY"
+	R1# permit host 192.168.30.3
+	R1# permit 192.168.40.0 0.0.0.255
+
+[Apply ACL to the Interface - in the correct direction]
+	R1# interface gigabitEthernet 0/1
+	R1# ip access-group BRANCH-OFFICE-POLICY out
+
+
+[Modify NAMED - ACL]
+	R1# ip access-list standard "BRANCH-OFFICE-POLICY"
+	R1# 30 permit 209.165.200.224 0.0.0.31
+	R1# 40 deny any
+
+
+[Configure SSH access]
+	R1# ip domain-name CCNALab.com
+	R1# username admin privilege 15 secret adminpass1
+
+[Configure VTY lines for only SSH and use local database for Authentication]
+	R1# line vty 0 15
+	R1# transport input ssh
+	R1# login local
+
+[Generate RSA Crypto key]
+	R1# crypto key generate rsa modulus 1024
+
+[Modify SSH Configuration]
+	R1# ip ssh time-out 75
+	R1# ip ssh authentication-retires 2
+
+
+
+--------------------------------------------------------------------------------
+Switch Configuration
+--------------------------------------------------------------------------------
+
+[Erase the Start-Up Configuration]
+	S1# erase startup-config
+	S1# show flash
+	S1# delete vlan.dat
+	S1# reload
+
+[Create VLANs on S1]
+	S1# vlan 10
+	S1# name "Student"
+
+	S1# vlan 20
+	S1# name "Faculty"
+
+	S1# vlan 99
+	S1# name "Management"
+
+
+[Assign VLAN to Interface]
+	S1# interface fastEthernet 0/6
+	S1# switchport mode access
+	S1# switchport access vlan 10
+
+[Assign VLAN to Multiple Interfaces]
+	S1# interface range fastEthernet 0/11-24
+	S1# switchport mode access
+	S1# switchport access vlan 10
+
+[Remove VLAN from Interface]
+	S1# interface fastEthernet 0/6
+	S1# no switchport access vlan
+
+
+[Configure IP Address on VLANs]
+	S1# interface vlan 99
+	S1# ip address 192.168.1.11 255.255.255.0
+
+[Configure Trunk on Interface]
+	S1# interface fastEthernet 0/6
+	S1# switchport mode trunk
+
+
+[Configure Default Gateway on S1]
+	S1# ip default-gateway 192.168.1.1
+
+
+[Enable Port Security on F0/6]
+	S1# interface fastEthernet 0/6
+	S1# shutdown
+	S1# switchport port-security
+
+[Static entry for the MAC Address]
+	S1# switchport port-security mac-address aaaa.bbbb.cccc
+
+
+
+--------------------------------------------------------------------------------
+Show Commands
+--------------------------------------------------------------------------------
+
+[Cisco IOS Version]
+	R1# show version
+
+[Verify SSH Configuration]
+	R1# show ip ssh
+
+[Interfaces]
+	R1# show ip interface brief
+
+[View the Trunk mode]
+	R1# show interfaces trunk
+
+[Verify Routing Configuration]
+	R1# show ip route
+
+[Confirm RIPv2 is running]
+	R1# show ip protocols
+
+
+[View Access List]
+	R1# show ip access-lists
+	R1# show access-list 100
+
+
+
+
+[View Default VLAN settings]
+	S1# show vlan
+
+[Verify Ports in VLANs]
+	S1# show vlan brief
+
+[Display the MAC addess table]
+	S1# show mac address-table ?
+
+
+[Verify port security]
+	S1# show port-security
+	S1# show port-security interface f0/6
+	S1# show port-security address
