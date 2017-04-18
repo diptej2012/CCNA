@@ -231,3 +231,46 @@ Show Commands
 	S1# show port-security
 	S1# show port-security interface f0/6
 	S1# show port-security address
+
+--------------------------------------------------------------------------------
+Standard ACL
+--------------------------------------------------------------------------------
+
+[ R2 ]
+[ Deny access to the 192.168.20.0/24 network from the 192.168.11.0/24 network ]
+	
+	$ access-list 1 deny 192.168.11.0 0.0.0.255
+
+[ To permit ALL other traffic ]
+	
+	$ access-list 1 permit any
+
+[ Apply Access list on the outbound interface to the Webserver ]
+
+	$ interface GigabitEthernet 0/0
+	$ ip access-group 1 out
+
+
+[ R3 ]
+[ Deny access to the 192.168.30.0/24 network from the 192.168.10.0/24 network ]
+
+	$ access-list 1 deny 192.168.10.0 0.0.0.255
+
+
+--------------------------------------------------------------------------------
+Named Standard ACL
+--------------------------------------------------------------------------------
+
+[ R2 ]
+[ Create Named list ]
+
+	$ ip access-list standard File_Server_Restrictions
+
+[ Allow 192.168.20.4 and deny all others ]
+
+	$ permit host 192.168.20.4
+	$ deny any
+
+[ Apply Access on the outbound interface ]
+
+	$ ip access-group File_Server_Restrictions out
