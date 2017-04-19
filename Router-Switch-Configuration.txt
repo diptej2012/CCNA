@@ -127,6 +127,27 @@ Router Configuration
 	R1# ip ssh authentication-retires 2
 
 
+[Router VLAN Routing - Subinterface 10]
+	R1# interface gigabitEthernet 0/0.10
+	R1# encapsulation dot1Q 10
+	R1# no shutdown
+
+
+[Configure DHCP]
+	R1# ip dhcp excluded-address 172.31.10.1 172.31.10.10
+	R1# ip dhcp pool VLAN_10
+	R1# network 172.31.10.0 255.255.255.224
+	R1# default-router 172.31.10.1
+	R1# dns-server 209.165.201.14
+
+[Configure Interface as DHCP client]
+	R1# interface gigabitEthernet 0/1
+	R1# ip address dhcp
+	R1# no shutdown
+
+
+
+
 
 --------------------------------------------------------------------------------
 Switch Configuration
@@ -163,14 +184,15 @@ Switch Configuration
 	S1# interface fastEthernet 0/6
 	S1# no switchport access vlan
 
+[Configure Trunk on Interface]
+	S1# interface fastEthernet 0/1-4
+	S1# switchport mode trunk
+
+
 
 [Configure IP Address on VLANs]
 	S1# interface vlan 99
 	S1# ip address 192.168.1.11 255.255.255.0
-
-[Configure Trunk on Interface]
-	S1# interface fastEthernet 0/6
-	S1# switchport mode trunk
 
 
 [Configure Default Gateway on S1]
