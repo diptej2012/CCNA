@@ -40,22 +40,22 @@ Configure and Verify SSH access on device
 --------------------------------------------------------------------------------
 Configure basic configuration
 --------------------------------------------------------------------------------
-Router(config)# 		hostname R1
-Router(config)# 		banner motd # ... #
+Router(config)# 	hostname R1
+Router(config)# 	banner motd # ... #
 
-Router(config)# 		line console 0  (line vty 0 15)
+Router(config)# 	line console 0  (line vty 0 15)
 Router(config-line)# 	password cisco
 Router(config-line)# 	login
 Router(config-line)# 	exit
 
-Router(config)# 		enable secret class
-Router(config)# 		service password-encryption
+Router(config)# 	enable secret class
+Router(config)# 	service password-encryption
 
 
 SWITCH:	
-	Switch(config)# 			interface vlan 1
-	Switch(config-if)# 			ip address 10.10.10.2 255.255.255.0
-	Switch(config-if)# 			no shutdown
+	Switch(config)#    interface vlan 1
+	Switch(config-if)# ip address 10.10.10.2 255.255.255.0
+	Switch(config-if)# no shutdown
 
 
 
@@ -63,18 +63,18 @@ SWITCH:
 --------------------------------------------------------------------------------
 Configure SSH Version 2 to secure remote access
 --------------------------------------------------------------------------------
-Router(config)# 		ip domain-name cisco.com
-Router(config)# 		crypto key generate rsa
+Router(config)# 	ip domain-name cisco.com
+Router(config)# 	crypto key generate rsa
 
 		The name for the keys: MYRSA-Keys
 		How many bits in the modulus: 1024
 
-Router(config)# 		ip ssh version 2
-Router(config)# 		username admin privilege 15 secret ccna
-Router(config)# 		line vty 0 15
-Router(config-line)# 	login local
-Router(config-line)# 	transport input ssh
-Router(config-line)# 	exit
+Router(config)# 	ip ssh version 2
+Router(config)# 	username admin privilege 15 secret ccna
+Router(config)# 	line vty 0 15
+Router(config-line)# login local
+Router(config-line)# transport input ssh
+Router(config-line)# exit
 
 
 --------------------------------------------------------------------------------
@@ -82,11 +82,11 @@ Configure the port security feature
 --------------------------------------------------------------------------------
 
 DISABLE ALL UNUSED PORTS:
-	Router(config)# 			interface range fa0/3-24
+	Router(config)# 		interface range fa0/3-24
 	Router(config-if-range)# 	shutdown
 	Router(config-if-range)# 	exit
 
-	Router(config)# 			interface range g0/1-2
+	Router(config)# 		interface range g0/1-2
 	Router(config-if-range)# 	shutdown
 	Router(config-if-range)# 	exit
 
