@@ -1,0 +1,100 @@
+Enters into line configuration mode for console line 0
+	Router(config)# 	line console 0
+
+Enters into line configuration mode for VTY lines 0,1,2,3,4
+	Router(config)# 	line vty 0 4
+
+
+Sets password to "cookie" on VTY lines 0,1,2,3,4
+	Router(config-line)# password cookie
+
+Enables vty password authentication
+	Router(config-line)# login
+
+
+
+
+Forces a line break after log event
+	Router(config-line)# logging synchronous
+
+Encrypts all system passwords
+	Router(config)# 	service password-encryption
+
+Protects access to privileged exec mode with secret passphrase "cookie"
+	Router(config)# 	enable secret cookie
+
+Sets a welcome message that is displayed after successful user authentication
+	Router(config)# 	banner motd  # ... #
+	Router(config)# 	banner login # ... #
+
+
+--------------------------------------------------------------------------------
+Configure and Verify SSH access on device
+--------------------------------------------------------------------------------
+(For Switch)
+	S1(config)# 			interface vlan 1
+	S1(config-if)# 			ip address 10.10.10.2 255.255.255.0
+	S1(config-if)# 			no shutdown
+	
+
+--------------------------------------------------------------------------------
+Configure basic configuration
+--------------------------------------------------------------------------------
+Router(config)# 		hostname R1
+Router(config)# 		banner motd # ... #
+
+Router(config)# 		line console 0  (line vty 0 15)
+Router(config-line)# 	password cisco
+Router(config-line)# 	login
+Router(config-line)# 	exit
+
+Router(config)# 		enable secret class
+Router(config)# 		service password-encryption
+
+
+SWITCH:	
+	Switch(config)# 			interface vlan 1
+	Switch(config-if)# 			ip address 10.10.10.2 255.255.255.0
+	Switch(config-if)# 			no shutdown
+
+
+
+
+--------------------------------------------------------------------------------
+Configure SSH Version 2 to secure remote access
+--------------------------------------------------------------------------------
+Router(config)# 		ip domain-name cisco.com
+Router(config)# 		crypto key generate rsa
+
+		The name for the keys: MYRSA-Keys
+		How many bits in the modulus: 1024
+
+Router(config)# 		ip ssh version 2
+Router(config)# 		username admin privilege 15 secret ccna
+Router(config)# 		line vty 0 15
+Router(config-line)# 	login local
+Router(config-line)# 	transport input ssh
+Router(config-line)# 	exit
+
+
+--------------------------------------------------------------------------------
+Configure the port security feature
+--------------------------------------------------------------------------------
+
+DISABLE ALL UNUSED PORTS:
+	Router(config)# 			interface range fa0/3-24
+	Router(config-if-range)# 	shutdown
+	Router(config-if-range)# 	exit
+
+	Router(config)# 			interface range g0/1-2
+	Router(config-if-range)# 	shutdown
+	Router(config-if-range)# 	exit
+
+
+SET INTERFACE MODE TO ACCESS:	
+	Router(config)# interface range fa0/1-2
+	Router(config-if-range)# switchport mode access
+	Router(config-if-range)# switchport port-security
+	Router(config-if-range)# switchport port-security maximum 2
+	Router(config-if-range)# switchport port-security mac-address x.x.x
+	Router(config-if-range)# switchport port-security violation shutdown
