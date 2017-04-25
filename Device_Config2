@@ -1,42 +1,3 @@
-Enters into line configuration mode for console line 0
-	Router(config)# 	line console 0
-
-Enters into line configuration mode for VTY lines 0,1,2,3,4
-	Router(config)# 	line vty 0 4
-
-
-Sets password to "cookie" on VTY lines 0,1,2,3,4
-	Router(config-line)# password cookie
-
-Enables vty password authentication
-	Router(config-line)# login
-
-
-
-
-Forces a line break after log event
-	Router(config-line)# logging synchronous
-
-Encrypts all system passwords
-	Router(config)# 	service password-encryption
-
-Protects access to privileged exec mode with secret passphrase "cookie"
-	Router(config)# 	enable secret cookie
-
-Sets a welcome message that is displayed after successful user authentication
-	Router(config)# 	banner motd  # ... #
-	Router(config)# 	banner login # ... #
-
-
---------------------------------------------------------------------------------
-Configure and Verify SSH access on device
---------------------------------------------------------------------------------
-(For Switch)
-	S1(config)# 			interface vlan 1
-	S1(config-if)# 			ip address 10.10.10.2 255.255.255.0
-	S1(config-if)# 			no shutdown
-	
-
 --------------------------------------------------------------------------------
 Configure basic configuration
 --------------------------------------------------------------------------------
@@ -63,6 +24,9 @@ SWITCH:
 --------------------------------------------------------------------------------
 Configure SSH Version 2 to secure remote access
 --------------------------------------------------------------------------------
+SHOW:
+	Router(config)# 	show ip ssh
+
 Router(config)# 	ip domain-name cisco.com
 Router(config)# 	crypto key generate rsa
 
@@ -80,6 +44,8 @@ Router(config-line)# exit
 --------------------------------------------------------------------------------
 Configure the port security feature
 --------------------------------------------------------------------------------
+SHOW:
+	Router(config)# 		show port-security interface fa0/1
 
 DISABLE ALL UNUSED PORTS:
 	Router(config)# 		interface range fa0/3-24
@@ -97,4 +63,4 @@ SET INTERFACE MODE TO ACCESS:
 	Router(config-if-range)# switchport port-security
 	Router(config-if-range)# switchport port-security maximum 2
 	Router(config-if-range)# switchport port-security mac-address x.x.x
-	Router(config-if-range)# switchport port-security violation shutdown
+	Router(config-if-range)# switchport port-security violation shutdown (disable ports)
