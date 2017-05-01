@@ -11,6 +11,8 @@ Switch# delete vlan.dat
 Switch# erase startup-config
 Switch# reload
 
+Switch(config)#	do-exec show ip ssh 	(Run EXEC cmd from config)
+
 
 --------------------------------------------------------------------------------
 Configure Basic Device Settings
@@ -32,20 +34,6 @@ Router(config)# 	ip default-gateway 10.10.10.1  (IP packets with no dest.)
 
 
 --------------------------------------------------------------------------------
-Configure SSH Version 2
---------------------------------------------------------------------------------
-Router(config)# 	ip domain-name CCNA-Lab.com
-Router(config)# 	username admin privilege 15 secret adminpass1
-Router(config)# 	line vty 0 15
-Router(config-line)# 	transport input ssh
-Router(config-line)# 	login local
-Router(config-line)# 	exit
-
-Router(config)# 	crypto key generate rsa (Name: MYRSAKEYS, Modulus: 1024)
-Router(config)# 	ip ssh version 2
-
-
---------------------------------------------------------------------------------
 Configure Basic Network Device Settings
 --------------------------------------------------------------------------------
 Switch(config)# 	vlan 99
@@ -62,25 +50,36 @@ Switch(config)# 	ip default-gateway 192.168.1.1 	(Remote access)
 
 
 --------------------------------------------------------------------------------
-Configure the port security feature
+Configure SSH Version 2
+--------------------------------------------------------------------------------
+Router(config)# 	ip domain-name CCNA-Lab.com
+Router(config)# 	username admin privilege 15 secret adminpass1
+
+Router(config)# 	line vty 0 15
+Router(config-line)# 	transport input ssh
+Router(config-line)# 	login local 		(Use local database)
+Router(config-line)# 	exit
+
+Router(config)# 	crypto key generate rsa (Name: MYRSAKEYS, Modulus: 1024)
+Router(config)# 	ip ssh version 2
+
+
+--------------------------------------------------------------------------------
+Configure General Security Features
 --------------------------------------------------------------------------------
 SHOW:
 	Router(config)# 		show port-security interface fa0/1
 
-DISABLE ALL UNUSED PORTS:
-	Router(config)# 		interface range fa0/3-24
-	Router(config-if-range)# 	shutdown
-	Router(config-if-range)# 	exit
-
-	Router(config)# 		interface range g0/1-2
-	Router(config-if-range)# 	shutdown
-	Router(config-if-range)# 	exit
+SHUTDOWN ALL UNUSED PORTS:
+	Switch(config)# 		interface range fa0/3-24, g0/1-2
+	Switch(config-if-range)# 	shutdown
+	Switch(config-if-range)# 	exit
 
 
 SET INTERFACE MODE TO ACCESS:	
-	Router(config)# interface range fa0/1-2
-	Router(config-if-range)# switchport mode access
-	Router(config-if-range)# switchport port-security
-	Router(config-if-range)# switchport port-security maximum 2
-	Router(config-if-range)# switchport port-security mac-address x.x.x
-	Router(config-if-range)# switchport port-security violation shutdown (disable ports)
+	Switch(config)# interface range fa0/1-2
+	Switch(config-if-range)# switchport mode access 	(Port security only works on Access ports)
+	Switch(config-if-range)# switchport port-security
+	Switch(config-if-range)# switchport port-security maximum 2
+	Switch(config-if-range)# switchport port-security mac-address x.x.x
+	Switch(config-if-range)# switchport port-security violation shutdown (disable ports)
