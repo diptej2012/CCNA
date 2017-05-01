@@ -1,44 +1,64 @@
 --------------------------------------------------------------------------------
-Configure basic configuration
+Initialize Devices
+--------------------------------------------------------------------------------
+Router> enable
+Router# erase startup-config
+Router# reload
+
+Switch> enable
+Switch# show flash
+Switch# delete vlan.dat
+Switch# erase startup-config
+Switch# reload
+
+
+--------------------------------------------------------------------------------
+Configure Basic Device Settings
 --------------------------------------------------------------------------------
 Router(config)# 	hostname R1
 Router(config)# 	banner motd # ... #
 
-Router(config)# 	line console 0  (line vty 0 15)
+Router(config)# 	line console 0
+Router(config)# 	line vty 0 15
+
 Router(config-line)# 	password cisco
 Router(config-line)# 	login
 Router(config-line)# 	exit
 
-Router(config)# 	enable secret class
-Router(config)# 	service password-encryption
+Router(config)# 	enable secret class            (EXEC mode)
+Router(config)# 	service password-encryption    (Clear Text PWs)
 
-
-SWITCH:	
-	Switch(config)#    interface vlan 1
-	Switch(config-if)# ip address 10.10.10.2 255.255.255.0
-	Switch(config-if)# no shutdown
-
-
+Router(config)# 	ip default-gateway 10.10.10.1  (IP packets with no dest.)
 
 
 --------------------------------------------------------------------------------
-Configure SSH Version 2 to secure remote access
+Configure SSH Version 2
 --------------------------------------------------------------------------------
-SHOW:
-	Router(config)# 	show ip ssh
-
-Router(config)# 	ip domain-name cisco.com
-Router(config)# 	crypto key generate rsa
-
-		The name for the keys: MYRSA-Keys
-		How many bits in the modulus: 1024
-
-Router(config)# 	ip ssh version 2
-Router(config)# 	username admin privilege 15 secret ccna
+Router(config)# 	ip domain-name CCNA-Lab.com
+Router(config)# 	username admin privilege 15 secret adminpass1
 Router(config)# 	line vty 0 15
-Router(config-line)# login local
 Router(config-line)# transport input ssh
+Router(config-line)# login local
 Router(config-line)# exit
+
+Router(config)# 	crypto key generate rsa (Name: MYRSAKEYS, Modulus: 1024)
+Router(config)# 	ip ssh version 2
+
+
+--------------------------------------------------------------------------------
+Configure Basic Network Device Settings
+--------------------------------------------------------------------------------
+Switch(config)# 	vlan 99
+Switch(config)# 	exit
+
+Switch(config)# 		interface vlan 99
+Switch(config-if)# 		ip address 192.168.1.1 255.255.255.0
+Switch(config-if)# 		no shutdown
+
+Switch(config-if)# 			interface range fa0/1-24, g0/1-2
+Switch(config-if-range)#  	switchport access vlan 99
+
+Switch(config)# ip default-gateway 192.168.1.1 	(Remote access)
 
 
 --------------------------------------------------------------------------------
