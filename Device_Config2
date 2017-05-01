@@ -37,9 +37,9 @@ Configure SSH Version 2
 Router(config)# 	ip domain-name CCNA-Lab.com
 Router(config)# 	username admin privilege 15 secret adminpass1
 Router(config)# 	line vty 0 15
-Router(config-line)# transport input ssh
-Router(config-line)# login local
-Router(config-line)# exit
+Router(config-line)# 	transport input ssh
+Router(config-line)# 	login local
+Router(config-line)# 	exit
 
 Router(config)# 	crypto key generate rsa (Name: MYRSAKEYS, Modulus: 1024)
 Router(config)# 	ip ssh version 2
@@ -51,14 +51,14 @@ Configure Basic Network Device Settings
 Switch(config)# 	vlan 99
 Switch(config)# 	exit
 
-Switch(config)# 		interface vlan 99
-Switch(config-if)# 		ip address 192.168.1.1 255.255.255.0
-Switch(config-if)# 		no shutdown
+Switch(config)# 	interface vlan 99
+Switch(config-if)#	ip address 192.168.1.1 255.255.255.0
+Switch(config-if)#	no shutdown
 
-Switch(config-if)# 			interface range fa0/1-24, g0/1-2
+Switch(config-if)# 		interface range fa0/1-24, g0/1-2
 Switch(config-if-range)#  	switchport access vlan 99
 
-Switch(config)# ip default-gateway 192.168.1.1 	(Remote access)
+Switch(config)# 	ip default-gateway 192.168.1.1 	(Remote access)
 
 
 --------------------------------------------------------------------------------
