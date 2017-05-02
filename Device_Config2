@@ -102,3 +102,6 @@ DTP INITIATE TRUNKING:
 	Switch(config)# interface fa 0/18
 	Switch(config-if)# switchport mode dynamic desirable
 
+SWITCHPORT TRUNK NATIVE VLAN:
+	Switch(config-if)# switchport trunk native vlan 99
+	Switch(config-if)# no switchport trunk native vlan
