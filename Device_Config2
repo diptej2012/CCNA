@@ -83,3 +83,22 @@ SET INTERFACE MODE TO ACCESS:
 	Switch(config-if-range)# switchport port-security maximum 2
 	Switch(config-if-range)# switchport port-security mac-address x.x.x
 	Switch(config-if-range)# switchport port-security violation shutdown (disable ports)
+
+
+--------------------------------------------------------------------------------
+Configure VLANs and Trunking
+--------------------------------------------------------------------------------
+Switch(config)# vlan 10
+Switch(config-vlan)# name Student
+
+Switch(config)# vlan 99
+Switch(config-vlan)# name Management
+
+Switch(config)# interface fa 0/6
+Switch(config-if)# switchport mode access
+Switch(config-if)# switchport access vlan 10
+
+DTP INITIATE TRUNKING:
+	Switch(config)# interface fa 0/18
+	Switch(config-if)# switchport mode dynamic desirable
+
