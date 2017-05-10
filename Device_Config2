@@ -106,3 +106,39 @@ SWITCHPORT TRUNK NATIVE VLAN:
 	Switch(config)# interface fa 0/6
 	Switch(config-if)# switchport trunk native vlan 99
 	Switch(config-if)# no switchport trunk native vlan
+
+
+--------------------------------------------------------------------------------
+VLAN Databases
+--------------------------------------------------------------------------------
+# vlan 99
+# name Accounting
+# ip address 192.168.99.2 255.255.255.0
+# no shutdown
+# ip default-gateway 192.168.99.1
+
+# interface f0/3
+# switchport mode trunk
+# swtichport trunk native vlan 1
+
+# interface f0/6
+# switchport mode access
+# switchport access vlan 31
+
+
+
+--------------------------------------------------------------------------------
+Router 1 - Configure 802.1Q subinterface .31 on G0/1
+--------------------------------------------------------------------------------
+# interface g0/1.31
+# encapsulation dot1q 31
+# ip address 192.168.31.1 255.255.255.0
+# description Accounting LAN
+
+# interface g0/1.99
+# encapsulation dot1q 99
+# ip address 192.168.99.1 255.255.255.0
+# description Management LAN
+
+# interface g0/1
+# no shutdown
